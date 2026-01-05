@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { logoutAction } from "@/actions/auth-actions";
 
 // Navigasi sidebar admin
 const sidebarLinks = [
@@ -91,13 +92,20 @@ export default function AdminLayout({
                     </nav>
 
                     {/* Footer */}
-                    <div className="p-4 border-t border-border">
-                        <Link href="/">
-                            <Button variant="ghost" className="w-full justify-start gap-3 text-muted-foreground">
-                                <LogOut className="h-5 w-5" />
-                                Kembali ke Store
+                    <div className="p-4 border-t border-border space-y-2">
+                        <Link href="/" className="w-full block">
+                            <Button variant="outline" className="w-full justify-start gap-3 text-muted-foreground">
+                                Ke Store Customer
                             </Button>
                         </Link>
+                        <Button
+                            variant="ghost"
+                            className="w-full justify-start gap-3 text-destructive hover:text-destructive hover:bg-destructive/10"
+                            onClick={async () => await logoutAction()}
+                        >
+                            <LogOut className="h-5 w-5" />
+                            Keluar
+                        </Button>
                     </div>
                 </div>
             </aside>
