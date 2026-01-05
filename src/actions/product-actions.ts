@@ -2,13 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { productSchema, ProductFormData } from "@/lib/schemas";
 
 
 // Create Product
 export async function createProduct(data: ProductFormData) {
-    const supabase = await createClient();
+    const supabase = createAdminClient();
 
     try {
         // Validasi input
@@ -45,7 +45,7 @@ export async function createProduct(data: ProductFormData) {
 
 // Update Product
 export async function updateProduct(id: string, data: ProductFormData) {
-    const supabase = await createClient();
+    const supabase = createAdminClient();
 
     try {
         const validatedData = productSchema.parse(data);
@@ -85,7 +85,7 @@ export async function updateProduct(id: string, data: ProductFormData) {
 
 // Delete Product
 export async function deleteProduct(id: string) {
-    const supabase = await createClient();
+    const supabase = createAdminClient();
 
     try {
         const { error } = await supabase.from("products").delete().eq("id", id);
