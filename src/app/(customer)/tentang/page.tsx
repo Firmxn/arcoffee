@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Image from "next/image";
 import { Coffee, MapPin, Clock, Phone, Mail, Heart, Award, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -78,9 +79,15 @@ export default function TentangPage() {
             <section className="py-16">
                 <div className="container mx-auto px-4">
                     <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
-                        {/* Image Placeholder */}
-                        <div className="aspect-square rounded-3xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                            <Coffee className="h-32 w-32 text-primary/30" />
+                        {/* Barista Image */}
+                        <div className="relative aspect-square rounded-3xl overflow-hidden">
+                            <Image
+                                src="/images/about/barista.jpg"
+                                alt="ARCoffee Barista Team"
+                                fill
+                                className="object-cover"
+                                sizes="(max-width: 1024px) 100vw, 50vw"
+                            />
                         </div>
 
                         {/* Story Content */}

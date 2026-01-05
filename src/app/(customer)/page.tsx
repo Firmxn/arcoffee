@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Coffee, Star, Truck, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { getCategories, getProducts } from "@/lib/supabase/queries";
@@ -76,10 +77,17 @@ export default async function HomePage() {
                             </div>
                         </div>
 
-                        {/* Hero Image Placeholder */}
+                        {/* Hero Image */}
                         <div className="relative hidden lg:block">
-                            <div className="aspect-square rounded-3xl bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                                <Coffee className="h-48 w-48 text-primary/30" />
+                            <div className="relative aspect-square rounded-3xl overflow-hidden">
+                                <Image
+                                    src="/images/hero/coffeshop.jpg"
+                                    alt="ARCoffee Premium Coffee Shop"
+                                    fill
+                                    priority
+                                    className="object-cover"
+                                    sizes="(max-width: 1024px) 0vw, 50vw"
+                                />
                             </div>
                             {/* Decorative elements */}
                             <div className="absolute -top-4 -right-4 h-24 w-24 rounded-full bg-accent/20 blur-2xl" />
