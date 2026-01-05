@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Edit, Trash2, Plus, Search, Loader2 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Edit, Trash2, Plus, Search, Loader2, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -12,6 +12,13 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { formatPrice } from "@/lib/utils";
 import { deleteOption } from "@/actions/option-actions";
@@ -34,11 +41,26 @@ export default function OptionsTable({ options }: OptionsTableProps) {
     const [searchQuery, setSearchQuery] = useState("");
     const [isDeleting, setIsDeleting] = useState<string | null>(null);
 
+    // Pagination State
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(10);
+
     // Filter logic
     const filteredOptions = options.filter(opt =>
         opt.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (GROUP_LABELS[opt.group_name] || opt.group_name).toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    // Reset pagination when search changes
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [searchQuery]);
+
+    // Calculate pagination
+    const totalPages = Math.ceil(filteredOptions.length / itemsPerPage);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentData = filteredOptions.slice(startIndex, endIndex);
 
     const handleDelete = async (id: string, name: string) => {
         if (!confirm(`Hapus opsi "${name}"?`)) return;
@@ -90,7 +112,7 @@ export default function OptionsTable({ options }: OptionsTableProps) {
                                 </TableCell>
                             </TableRow>
                         ) : (
-                            filteredOptions.map((opt) => (
+                            currentData.map((opt) => (
                                 <TableRow key={opt.id}>
                                     <TableCell className="font-medium py-6 pl-6">{opt.name}</TableCell>
                                     <TableCell className="py-6">
@@ -130,6 +152,57 @@ export default function OptionsTable({ options }: OptionsTableProps) {
                     </TableBody>
                 </Table>
             </div>
+
+            {/* Pagination Controls */}
+            {filteredOptions.length > 0 && (
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-2 px-2">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <span className="hidden sm:inline">Baris per halaman:</span>
+                        <Select
+                            value={itemsPerPage.toString()}
+                            onValueChange={(val) => {
+                                setItemsPerPage(Number(val));
+                                setCurrentPage(1);
+                            }}
+                        >
+                            <SelectTrigger className="h-8 w-[70px]">
+                                <SelectValue placeholder={itemsPerPage} />
+                            </SelectTrigger>
+                            <SelectContent side="top">
+                                {[10, 20, 50, 100].map((size) => (
+                                    <SelectItem key={size} value={size.toString()}>
+                                        {size}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                        <span>
+                            {startIndex + 1}-{Math.min(endIndex, filteredOptions.length)} dari {filteredOptions.length}
+                        </span>
+                    </div>
+
+                    <div className="flex items-center space-x-2">
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                            disabled={currentPage === 1}
+                        >
+                            <ChevronLeft className="h-4 w-4 mr-1" />
+                            Prev
+                        </Button>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                            disabled={currentPage === totalPages}
+                        >
+                            Next
+                            <ChevronRight className="h-4 w-4 ml-1" />
+                        </Button>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
