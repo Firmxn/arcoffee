@@ -120,6 +120,9 @@ export default function SettingsForm({ initialData }: SettingsFormProps) {
                             {errors.store_name && (
                                 <p className="text-sm text-destructive">{errors.store_name.message}</p>
                             )}
+                            <p className="text-xs text-muted-foreground">
+                                Gunakan tanda pipa (|) untuk membedakan warna teks (contoh: ARC|offee).
+                            </p>
                         </div>
 
                         <div className="space-y-2">
@@ -132,6 +135,9 @@ export default function SettingsForm({ initialData }: SettingsFormProps) {
                             {errors.store_tagline && (
                                 <p className="text-sm text-destructive">{errors.store_tagline.message}</p>
                             )}
+                            <p className="text-xs text-muted-foreground">
+                                Gunakan tanda pipa (|) untuk membuat highlight warna pada teks (contoh: Kopi Premium | Sesuai Seleramu).
+                            </p>
                         </div>
                     </div>
 
@@ -298,7 +304,7 @@ export default function SettingsForm({ initialData }: SettingsFormProps) {
                         {errors.operating_hours_text && (
                             <p className="text-sm text-destructive">{errors.operating_hours_text.message}</p>
                         )}
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-xs text-muted-foreground">
                             Contoh: "Senin - Jumat: 08:00 - 22:00, Sabtu - Minggu: 09:00 - 23:00"
                         </p>
                     </div>
@@ -341,7 +347,7 @@ export default function SettingsForm({ initialData }: SettingsFormProps) {
                         {errors.about_story && (
                             <p className="text-sm text-destructive">{errors.about_story.message}</p>
                         )}
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-xs text-muted-foreground">
                             Tip: Tekan Enter 2x untuk membuat paragraf baru.
                         </p>
                     </div>

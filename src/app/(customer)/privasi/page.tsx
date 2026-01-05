@@ -54,7 +54,7 @@ export default async function PrivasiPage() {
                                     2. Informasi yang Kami Kumpulkan
                                 </h2>
                                 <p className="mb-3">Kami dapat mengumpulkan informasi berikut:</p>
-                                <ul className="space-y-2 ml-6">
+                                <ul className="space-y-2 ml-6 list-disc">
                                     <li>Nama lengkap dan informasi kontak (email, nomor telepon)</li>
                                     <li>Alamat pengiriman untuk pesanan delivery</li>
                                     <li>Informasi pembayaran (diproses melalui gateway pembayaran yang aman)</li>
@@ -68,7 +68,7 @@ export default async function PrivasiPage() {
                                     3. Penggunaan Informasi
                                 </h2>
                                 <p className="mb-3">Kami menggunakan informasi Anda untuk:</p>
-                                <ul className="space-y-2 ml-6">
+                                <ul className="space-y-2 ml-6 list-disc">
                                     <li>Memproses dan mengirimkan pesanan Anda</li>
                                     <li>Berkomunikasi dengan Anda tentang pesanan dan layanan</li>
                                     <li>Meningkatkan pengalaman pengguna di website kami</li>
@@ -97,7 +97,7 @@ export default async function PrivasiPage() {
                                     Kami tidak menjual atau menyewakan informasi pribadi Anda kepada pihak ketiga.
                                     Kami hanya membagikan informasi Anda dengan:
                                 </p>
-                                <ul className="space-y-2 ml-6">
+                                <ul className="space-y-2 ml-6 list-disc">
                                     <li>Penyedia layanan pembayaran untuk memproses transaksi</li>
                                     <li>Layanan pengiriman untuk mengirimkan pesanan Anda</li>
                                     <li>Pihak ketiga yang membantu operasional bisnis kami (dengan perjanjian kerahasiaan)</li>
@@ -122,7 +122,7 @@ export default async function PrivasiPage() {
                                     7. Hak Anda
                                 </h2>
                                 <p className="mb-3">Anda memiliki hak untuk:</p>
-                                <ul className="space-y-2 ml-6">
+                                <ul className="space-y-2 ml-6 list-disc">
                                     <li>Mengakses dan memperbarui informasi pribadi Anda</li>
                                     <li>Meminta penghapusan data pribadi Anda</li>
                                     <li>Menolak penggunaan data untuk tujuan marketing</li>

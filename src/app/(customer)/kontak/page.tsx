@@ -27,7 +27,8 @@ export default async function ContactPage() {
             title: "Telepon & WhatsApp",
             details: [settings.phone],
             action: "Hubungi Sekarang",
-            href: `tel:${settings.phone}`,
+            href: `https://wa.me/${settings.phone.replace(/[^0-9]/g, "")}`,
+            target: "_blank",
         },
         {
             icon: Mail,
@@ -186,24 +187,6 @@ export default async function ContactPage() {
                 </div>
             </section>
 
-            {/* Map Section (Placeholder) */}
-            <section className="border-t border-border bg-muted/30 py-16">
-                <div className="container mx-auto px-4">
-                    <h2 className="font-heading text-3xl font-bold text-center mb-8">
-                        Lokasi Kami
-                    </h2>
-                    <div className="mx-auto max-w-4xl rounded-lg border bg-card overflow-hidden">
-                        <div className="aspect-video bg-muted flex items-center justify-center">
-                            <div className="text-center">
-                                <MapPin className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                                <p className="text-muted-foreground">
-                                    Peta lokasi akan ditampilkan di sini
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
         </div>
     );
 }

@@ -142,6 +142,39 @@ export default async function LokasiPage() {
                 </div>
             </section>
 
+            {/* Map Section */}
+            <section className="bg-muted/30 py-16">
+                <div className="container mx-auto px-4">
+                    <h2 className="font-heading text-3xl font-bold text-center mb-8">
+                        Peta Lokasi
+                    </h2>
+                    <div className="mx-auto max-w-4xl rounded-lg border bg-card overflow-hidden">
+                        <div className="aspect-video bg-muted flex items-center justify-center relative">
+                            {settings.google_maps_url || settings.address ? (
+                                <iframe
+                                    src={`https://maps.google.com/maps?q=${encodeURIComponent(`${settings.address}, ${settings.city}`)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                                    width="100%"
+                                    height="100%"
+                                    style={{ border: 0 }}
+                                    allowFullScreen
+                                    loading="lazy"
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                    title="Lokasi Toko"
+                                    className="absolute inset-0"
+                                />
+                            ) : (
+                                <div className="text-center">
+                                    <MapPin className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                                    <p className="text-muted-foreground">
+                                        Peta lokasi akan ditampilkan di sini
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* CTA Section */}
             <section className="border-t border-border bg-muted/50 py-16">
                 <div className="container mx-auto px-4">
