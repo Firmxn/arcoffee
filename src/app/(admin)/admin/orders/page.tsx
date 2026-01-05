@@ -14,7 +14,7 @@ export default async function AdminOrdersPage() {
         id: order.id, // Use UUID for operations
         orderNumber: order.order_number, // Display ID
         customerName: order.customer_name,
-        customerPhone: order.customer_phone,
+        customerPhone: order.customer_phone || "",
         totalPrice: order.total_price,
         status: (order.status as OrderStatus) || "pending",
         notes: order.notes || undefined,
@@ -36,7 +36,7 @@ export default async function AdminOrdersPage() {
             quantity: item.quantity,
             subtotal: item.subtotal, // Use stored subtotal directly
             notes: item.notes || undefined,
-            selectedOptions: item.order_item_options.map((opt) => ({
+            selectedOptions: item.order_item_options.map((opt: any) => ({
                 id: (opt as any).id || crypto.randomUUID(), // Fallback if type issue
                 name: opt.option_name,
                 extraPrice: opt.extra_price,

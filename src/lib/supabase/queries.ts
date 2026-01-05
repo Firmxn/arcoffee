@@ -19,7 +19,11 @@ export interface ProductWithOptions {
     image_url?: string;
     category_id: string;
     created_at: string;
-    options: any[];
+    is_available?: boolean;
+    product_options: {
+        options: any; // Nested option object result from join
+    }[];
+    options?: any[]; // Keep for backward compat if transformed manually
 }
 
 export interface OrderWithItems {
@@ -32,6 +36,7 @@ export interface OrderWithItems {
     status: string;
     total_price: number;
     user_id: string;
+    updated_at: string;
     order_items: any[];
 }
 

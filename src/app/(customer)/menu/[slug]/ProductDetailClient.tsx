@@ -9,7 +9,8 @@ import { Badge } from "@/components/ui/badge";
 import { formatPrice } from "@/lib/utils";
 import { useCartStore } from "@/stores/cart-store";
 import { Option as OptionType, OptionGroup } from "@/types"; // Use global types
-import { ProductWithOptions, Option as DbOption } from "@/lib/supabase/types";
+import { Option as DbOption } from "@/lib/supabase/types";
+import { ProductWithOptions } from "@/lib/supabase/queries";
 import { toast } from "sonner";
 
 // Mapping group ke label
@@ -29,7 +30,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
     const addItem = useCartStore((state) => state.addItem);
 
     // Transform data product options dari DB structure ke flat array of options
-    const allOptions = product.product_options.map((po) => po.options);
+    const allOptions = product.product_options.map((po: any) => po.options);
 
     // State untuk kustomisasi
     const [quantity, setQuantity] = useState(1);
@@ -37,11 +38,11 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
     const [notes, setNotes] = useState("");
 
     // Grup opsi yang tersedia untuk produk ini
-    const availableGroups = [...new Set(allOptions.map((opt) => opt.group_name))];
+    const availableGroups = [...new Set(allOptions.map((opt: any) => opt.group_name))];
 
     // Ambil opsi berdasarkan grup dari produk
-    const getOptionsByGroup = (group: string) => {
-        return allOptions.filter((opt) => opt.group_name === group);
+    const getOptionsByGroup = (group: any) => {
+        return allOptions.filter((opt: any) => opt.group_name === group);
     };
 
     // Handle pilih opsi
@@ -90,8 +91,8 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
             price: product.price,
             image: product.image_url || "",
             categoryId: product.category_id || "",
-            isAvailable: product.is_available,
-            options: product.product_options.map(po => ({
+            isAvailable: product.is_available ?? true,
+            options: product.product_options.map((po: any) => ({
                 productId: product.id,
                 optionId: po.options.id,
                 option: {
@@ -128,7 +129,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
 
                 <div className="grid gap-8 lg:grid-cols-2">
                     {/* Product Image */}
-                    <div className="aspect-square rounded-3xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center overflow-hidden relative">
+                    <div className="aspect-square rounded-3xl bg-linear-to-br from-primary/10 to-accent/10 flex items-center justify-center overflow-hidden relative">
                         {product.image_url ? (
                             <img
                                 src={product.image_url}
@@ -163,10 +164,10 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                         {/* Customization Options */}
                         {availableGroups.length > 0 && (
                             <div className="space-y-6">
-                                {availableGroups.map((group) => {
+                                {availableGroups.map((group: any) => {
                                     const groupOptions = getOptionsByGroup(group);
                                     // Sort options by extra_price (asc)
-                                    groupOptions.sort((a, b) => a.extra_price - b.extra_price);
+                                    groupOptions.sort((a: any, b: any) => a.extra_price - b.extra_price);
 
                                     const isMultiple = group === "addon";
 
@@ -181,7 +182,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
                                                 )}
                                             </h3>
                                             <div className="flex flex-wrap gap-2">
-                                                {groupOptions.map((option) => {
+                                                {groupOptions.map((option: any) => {
                                                     const isSelected = isOptionSelected(option.id);
                                                     return (
                                                         <Button

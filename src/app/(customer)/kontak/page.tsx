@@ -60,9 +60,9 @@ export default async function ContactPage() {
     ].filter(social => social.url); // Only show if URL exists
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-background to-muted/30">
+        <div className="min-h-screen bg-linear-to-b from-background to-muted/30">
             {/* Hero Section */}
-            <section className="border-b border-border bg-gradient-to-br from-primary/5 via-background to-accent/5">
+            <section className="border-b border-border bg-linear-to-br from-primary/5 via-background to-accent/5">
                 <div className="container mx-auto px-4 py-16 md:py-24">
                     <div className="mx-auto max-w-3xl text-center">
                         <h1 className="font-heading text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">

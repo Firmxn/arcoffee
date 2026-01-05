@@ -213,7 +213,7 @@ export default async function OrderStatusPage({ params }: PageProps) {
                                             {item.order_item_options.length > 0 && (
                                                 <p className="text-sm text-muted-foreground">
                                                     {item.order_item_options
-                                                        .map((opt) => opt.option_name)
+                                                        .map((opt: any) => opt.option_name)
                                                         .join(", ")}
                                                 </p>
                                             )}
