@@ -121,30 +121,31 @@ export default function ProductsTable({ products, categories }: ProductsTablePro
             {/* Grid */}
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {filteredProducts.map((product) => (
-                    <Card key={product.id} className="relative overflow-hidden group">
+                    <Card key={product.id} className="relative overflow-hidden group p-0 gap-0">
                         {/* Aspect Ratio Image */}
-                        <div className="aspect-video bg-muted relative">
+                        {/* Aspect Ratio Image: Force 1:1 Square */}
+                        <div className="relative w-full pt-[100%] bg-muted overflow-hidden">
                             {product.image ? (
                                 <img
                                     src={product.image}
                                     alt={product.name}
-                                    className="w-full h-full object-cover"
+                                    className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-105"
                                 />
                             ) : (
-                                <div className="w-full h-full flex items-center justify-center bg-linear-to-br from-primary/10 to-accent/10">
+                                <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10">
                                     <Coffee className="h-12 w-12 text-primary/30" />
                                 </div>
                             )}
+                        </div>
 
-                            {/* Availability Badge */}
-                            <div className="absolute top-2 right-2">
-                                <Badge
-                                    variant={product.is_available ? "default" : "destructive"}
-                                    className="shadow-sm"
-                                >
-                                    {product.is_available ? "Aktif" : "Nonaktif"}
-                                </Badge>
-                            </div>
+                        {/* Availability Badge */}
+                        <div className="absolute top-2 right-2">
+                            <Badge
+                                variant={product.is_available ? "default" : "destructive"}
+                                className="shadow-sm"
+                            >
+                                {product.is_available ? "Aktif" : "Nonaktif"}
+                            </Badge>
                         </div>
 
                         <CardContent className="p-4">
@@ -199,17 +200,19 @@ export default function ProductsTable({ products, categories }: ProductsTablePro
             </div>
 
             {/* Empty State */}
-            {filteredProducts.length === 0 && (
-                <div className="text-center py-12">
-                    <Package className="mx-auto h-12 w-12 text-muted-foreground/30" />
-                    <h3 className="mt-4 font-heading text-lg font-semibold">
-                        Belum ada produk
-                    </h3>
-                    <p className="text-muted-foreground">
-                        Mulai tambahkan produk untuk menu Anda.
-                    </p>
-                </div>
-            )}
-        </div>
+            {
+                filteredProducts.length === 0 && (
+                    <div className="text-center py-12">
+                        <Package className="mx-auto h-12 w-12 text-muted-foreground/30" />
+                        <h3 className="mt-4 font-heading text-lg font-semibold">
+                            Belum ada produk
+                        </h3>
+                        <p className="text-muted-foreground">
+                            Mulai tambahkan produk untuk menu Anda.
+                        </p>
+                    </div>
+                )
+            }
+        </div >
     );
 }
