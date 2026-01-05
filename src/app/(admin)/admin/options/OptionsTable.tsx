@@ -76,30 +76,30 @@ export default function OptionsTable({ options }: OptionsTableProps) {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead>Nama Opsi</TableHead>
-                            <TableHead>Grup</TableHead>
-                            <TableHead>Harga Tambahan</TableHead>
-                            <TableHead className="text-right">Aksi</TableHead>
+                            <TableHead className="py-6 pl-6">Nama Opsi</TableHead>
+                            <TableHead className="py-6">Grup</TableHead>
+                            <TableHead className="py-6">Harga Tambahan</TableHead>
+                            <TableHead className="text-right py-6 pr-6 w-[120px]">Aksi</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {filteredOptions.length === 0 ? (
                             <TableRow>
-                                <TableCell colSpan={4} className="h-24 text-center text-muted-foreground">
+                                <TableCell colSpan={4} className="h-24 text-center text-muted-foreground py-6">
                                     Tidak ada data opsi.
                                 </TableCell>
                             </TableRow>
                         ) : (
                             filteredOptions.map((opt) => (
                                 <TableRow key={opt.id}>
-                                    <TableCell className="font-medium">{opt.name}</TableCell>
-                                    <TableCell>
+                                    <TableCell className="font-medium py-6 pl-6">{opt.name}</TableCell>
+                                    <TableCell className="py-6">
                                         <Badge variant="secondary" className="capitalize">
                                             {GROUP_LABELS[opt.group_name] || opt.group_name}
                                         </Badge>
                                     </TableCell>
-                                    <TableCell>{opt.extra_price > 0 ? formatPrice(opt.extra_price) : "Gratis"}</TableCell>
-                                    <TableCell className="text-right">
+                                    <TableCell className="py-6">{opt.extra_price > 0 ? formatPrice(opt.extra_price) : "Gratis"}</TableCell>
+                                    <TableCell className="text-right py-6 pr-6">
                                         <div className="flex justify-end gap-2">
                                             <OptionDialog
                                                 optionToEdit={opt}
