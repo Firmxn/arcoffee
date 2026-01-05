@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Coffee, Menu, ShoppingBag, X } from "lucide-react";
+import { Coffee, Menu, ShoppingBag, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -18,7 +18,7 @@ import { useCartStore } from "@/stores/cart-store";
 const navLinks = [
     { label: "Beranda", href: "/" },
     { label: "Menu", href: "/menu" },
-    { label: "Tentang", href: "/tentang" },
+    { label: "Lacak Pesanan", href: "/track" },
 ];
 
 export default function Header() {
@@ -51,6 +51,14 @@ export default function Header() {
 
                 {/* Actions */}
                 <div className="flex items-center gap-2">
+                    {/* Track Order Button - Desktop */}
+                    <Link href="/track" className="hidden md:block">
+                        <Button variant="outline" size="sm" className="gap-2">
+                            <Package className="h-4 w-4" />
+                            Lacak
+                        </Button>
+                    </Link>
+
                     {/* Cart Button */}
                     <Link href="/cart">
                         <Button variant="ghost" size="icon" className="relative">
