@@ -1,55 +1,55 @@
-"use client";
-
-import { useEffect, useState } from "react";
 import {
     ShoppingBag,
     Clock,
     CheckCircle2,
     DollarSign,
     TrendingUp,
-    Coffee
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { formatPrice } from "@/data/mock-data";
-import { Order } from "@/types";
+import { formatPrice } from "@/lib/utils";
+import { getAllOrders } from "@/lib/supabase/queries";
+import { OrderStatus } from "@/types";
 
-export default function AdminDashboardPage() {
-    const [orders, setOrders] = useState<Order[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+export const revalidate = 0; // Disable cache
 
-    // Load orders dari localStorage
-    useEffect(() => {
-        const loadOrders = () => {
-            const storedOrders = JSON.parse(localStorage.getItem("arcoffee-orders") || "[]");
-            setOrders(storedOrders);
-            setIsLoading(false);
-        };
-
-        loadOrders();
-
-        // Poll setiap 5 detik untuk update real-time (simulasi)
-        const interval = setInterval(loadOrders, 5000);
-        return () => clearInterval(interval);
-    }, []);
+export default async function AdminDashboardPage() {
+    const orders = await getAllOrders();
 
     // Hitung statistik
     const stats = {
         totalOrders: orders.length,
-        pendingOrders: orders.filter((o) => o.status === "pending").length,
-        completedOrders: orders.filter((o) => o.status === "completed").length,
-        totalRevenue: orders.reduce((sum, o) => sum + o.totalPrice, 0),
+        pendingOrders: orders.filter((o) => (o.status as string) === "pending").length,
+        completedOrders: orders.filter((o) => (o.status as string) === "completed").length,
+        totalRevenue: orders
+            .filter((o) => (o.status as string) === "completed")
+            .reduce((sum, o) => sum + o.total_price, 0),
     };
 
     // Recent orders (5 terakhir)
-    const recentOrders = [...orders].reverse().slice(0, 5);
+    const recentOrders = [...orders].slice(0, 5); // getAllOrders sudah desc order
 
-    if (isLoading) {
-        return (
-            <div className="flex items-center justify-center h-64">
-                <Coffee className="h-8 w-8 animate-pulse text-primary" />
-            </div>
-        );
-    }
+    // Helper untuk status label
+    const getStatusLabel = (status: string) => {
+        switch (status as OrderStatus) {
+            case "pending": return "Menunggu";
+            case "processing": return "Diproses";
+            case "ready": return "Siap";
+            case "completed": return "Selesai";
+            case "cancelled": return "Batal";
+            default: return status;
+        }
+    };
+
+    const getStatusColor = (status: string) => {
+        switch (status as OrderStatus) {
+            case "pending": return "bg-yellow-500/10 text-yellow-500";
+            case "processing": return "bg-blue-500/10 text-blue-500";
+            case "ready": return "bg-green-500/10 text-green-500";
+            case "completed": return "bg-gray-500/10 text-gray-500";
+            case "cancelled": return "bg-red-500/10 text-red-500";
+            default: return "bg-muted";
+        }
+    };
 
     return (
         <div className="space-y-6">
@@ -86,7 +86,7 @@ export default function AdminDashboardPage() {
                     <CardContent>
                         <div className="text-2xl font-bold">{stats.pendingOrders}</div>
                         <p className="text-xs text-muted-foreground">
-                            Perlu segera diproses
+                            Pesanan per status
                         </p>
                     </CardContent>
                 </Card>
@@ -116,7 +116,7 @@ export default function AdminDashboardPage() {
                     <CardContent>
                         <div className="text-2xl font-bold">{formatPrice(stats.totalRevenue)}</div>
                         <p className="text-xs text-muted-foreground">
-                            Sepanjang waktu
+                            Dari pesanan selesai
                         </p>
                     </CardContent>
                 </Card>
@@ -145,36 +145,19 @@ export default function AdminDashboardPage() {
                                 >
                                     <div className="flex-1">
                                         <div className="flex items-center gap-2">
-                                            <p className="font-mono font-medium text-sm">{order.id}</p>
+                                            <p className="font-mono font-medium text-sm">{order.order_number}</p>
                                             <span
-                                                className={`px-2 py-0.5 rounded text-xs font-medium ${order.status === "pending"
-                                                        ? "bg-yellow-500/10 text-yellow-500"
-                                                        : order.status === "processing"
-                                                            ? "bg-blue-500/10 text-blue-500"
-                                                            : order.status === "ready"
-                                                                ? "bg-green-500/10 text-green-500"
-                                                                : order.status === "completed"
-                                                                    ? "bg-gray-500/10 text-gray-500"
-                                                                    : "bg-red-500/10 text-red-500"
-                                                    }`}
+                                                className={`px-2 py-0.5 rounded text-xs font-medium ${getStatusColor(order.status || "")}`}
                                             >
-                                                {order.status === "pending"
-                                                    ? "Menunggu"
-                                                    : order.status === "processing"
-                                                        ? "Diproses"
-                                                        : order.status === "ready"
-                                                            ? "Siap"
-                                                            : order.status === "completed"
-                                                                ? "Selesai"
-                                                                : "Batal"}
+                                                {getStatusLabel(order.status || "")}
                                             </span>
                                         </div>
                                         <p className="text-sm text-muted-foreground mt-1">
-                                            {order.customerName} • {order.items.length} item
+                                            {order.customer_name} • {order.order_items.length} item
                                         </p>
                                     </div>
                                     <p className="font-bold text-primary">
-                                        {formatPrice(order.totalPrice)}
+                                        {formatPrice(order.total_price)}
                                     </p>
                                 </div>
                             ))}
