@@ -128,7 +128,7 @@ export default function ProductsTable({ products, categories, options }: Product
                                     className="absolute inset-0 w-full h-full object-cover transition-transform group-hover:scale-105"
                                 />
                             ) : (
-                                <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/10 to-accent/10">
+                                <div className="absolute inset-0 w-full h-full flex items-center justify-center bg-linear-to-br from-primary/10 to-accent/10">
                                     <Coffee className="h-12 w-12 text-primary/30" />
                                 </div>
                             )}

@@ -163,8 +163,8 @@ export function ProductDialog({
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             {trigger && <DialogTrigger asChild>{trigger}</DialogTrigger>}
-            <DialogContent className="sm:max-w-[600px] max-h-[90vh] overflow-y-auto">
-                <DialogHeader>
+            <DialogContent className="sm:max-w-[600px] max-h-[90vh] flex flex-col p-0 gap-0">
+                <DialogHeader className="p-6 border-b">
                     <DialogTitle>
                         {productToEdit ? "Edit Produk" : "Tambah Produk Baru"}
                     </DialogTitle>
@@ -173,177 +173,179 @@ export function ProductDialog({
                     </DialogDescription>
                 </DialogHeader>
 
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-4">
-                    <div className="grid gap-2">
-                        <Label htmlFor="name">Nama Produk</Label>
-                        <Input id="name" {...form.register("name")} placeholder="Contoh: Kopi Susu Aren" />
-                        {form.formState.errors.name && (
-                            <p className="text-sm text-destructive">
-                                {form.formState.errors.name.message}
-                            </p>
-                        )}
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
+                <div className="flex-1 overflow-y-auto p-6">
+                    <form id="product-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                         <div className="grid gap-2">
-                            <Label htmlFor="price">Harga (Rp)</Label>
-                            <Input
-                                id="price"
-                                type="number"
-                                {...form.register("price")}
-                            />
-                            {form.formState.errors.price && (
+                            <Label htmlFor="name">Nama Produk</Label>
+                            <Input id="name" {...form.register("name")} placeholder="Contoh: Kopi Susu Aren" />
+                            {form.formState.errors.name && (
                                 <p className="text-sm text-destructive">
-                                    {form.formState.errors.price.message}
+                                    {form.formState.errors.name.message}
                                 </p>
                             )}
                         </div>
 
-                        <div className="grid gap-2">
-                            <Label htmlFor="category">Kategori</Label>
-                            <Select
-                                onValueChange={(val) => form.setValue("category_id", val)}
-                                defaultValue={form.getValues("category_id")}
-                            >
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Pilih Kategori" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    {categories.map((cat) => (
-                                        <SelectItem key={cat.id} value={cat.id}>
-                                            {cat.name}
-                                        </SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
-                        </div>
-                    </div>
-
-                    <div className="grid gap-2">
-                        <Label htmlFor="description">Deskripsi</Label>
-                        <Textarea
-                            id="description"
-                            {...form.register("description")}
-                            placeholder="Jelaskan rasa dan komposisi produk..."
-                        />
-                    </div>
-
-                    {/* Options Selection */}
-                    {options && options.length > 0 && (
-                        <div className="grid gap-2">
-                            <Label>Opsi & Add-ons Tersedia</Label>
-                            <div className="border rounded-md p-4 max-h-[250px] overflow-y-auto space-y-4 bg-muted/20">
-                                {groupOrder.map((groupKey) => {
-                                    const opts = groupedOptions[groupKey];
-                                    if (!opts || opts.length === 0) return null;
-
-                                    return (
-                                        <div key={groupKey}>
-                                            <h4 className="font-semibold text-xs uppercase text-muted-foreground mb-2 sticky top-0 bg-background/95 backdrop-blur py-1 z-10 w-full border-b">
-                                                {GROUP_LABELS[groupKey] || groupKey}
-                                            </h4>
-                                            <div className="grid grid-cols-2 gap-x-4 gap-y-2">
-                                                {opts.map((opt) => (
-                                                    <div key={opt.id} className="flex items-center space-x-2">
-                                                        <Checkbox
-                                                            id={`opt-${opt.id}`}
-                                                            checked={form.watch("options")?.includes(opt.id)}
-                                                            onCheckedChange={(checked) => {
-                                                                const current = form.getValues("options") || [];
-                                                                if (checked) {
-                                                                    form.setValue("options", [...current, opt.id]);
-                                                                } else {
-                                                                    form.setValue("options", current.filter((id) => id !== opt.id));
-                                                                }
-                                                            }}
-                                                        />
-                                                        <Label htmlFor={`opt-${opt.id}`} className="text-sm cursor-pointer font-normal flex justify-between w-full">
-                                                            <span>{opt.name}</span>
-                                                            {opt.extra_price > 0 && (
-                                                                <span className="text-muted-foreground text-xs ml-1">
-                                                                    +{formatPrice(opt.extra_price)}
-                                                                </span>
-                                                            )}
-                                                        </Label>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                            <p className="text-xs text-muted-foreground">Centang opsi yang bisa dipilih customer untuk produk ini.</p>
-                        </div>
-                    )}
-
-                    <div className="grid gap-2">
-                        <Label>Gambar Produk</Label>
-
-                        {/* Preview Area */}
-                        {(filePreview || form.watch("image")) && (
-                            <div className="relative w-full h-48 bg-muted rounded-md overflow-hidden border">
-                                {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img
-                                    src={filePreview || form.watch("image") || ""}
-                                    alt="Preview"
-                                    className="w-full h-full object-cover"
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="grid gap-2">
+                                <Label htmlFor="price">Harga (Rp)</Label>
+                                <Input
+                                    id="price"
+                                    type="number"
+                                    {...form.register("price")}
                                 />
+                                {form.formState.errors.price && (
+                                    <p className="text-sm text-destructive">
+                                        {form.formState.errors.price.message}
+                                    </p>
+                                )}
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="category">Kategori</Label>
+                                <Select
+                                    onValueChange={(val) => form.setValue("category_id", val)}
+                                    defaultValue={form.getValues("category_id")}
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Pilih Kategori" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {categories.map((cat) => (
+                                            <SelectItem key={cat.id} value={cat.id}>
+                                                {cat.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+                        </div>
+
+                        <div className="grid gap-2">
+                            <Label htmlFor="description">Deskripsi</Label>
+                            <Textarea
+                                id="description"
+                                {...form.register("description")}
+                                placeholder="Jelaskan rasa dan komposisi produk..."
+                            />
+                        </div>
+
+                        {/* Options Selection */}
+                        {options && options.length > 0 && (
+                            <div className="grid gap-2">
+                                <Label>Opsi & Add-ons Tersedia</Label>
+                                <div className="border rounded-md p-4 space-y-4 bg-muted/20">
+                                    {groupOrder.map((groupKey) => {
+                                        const opts = groupedOptions[groupKey];
+                                        if (!opts || opts.length === 0) return null;
+
+                                        return (
+                                            <div key={groupKey}>
+                                                <h4 className="font-semibold text-xs uppercase text-muted-foreground mb-2 py-1 border-b">
+                                                    {GROUP_LABELS[groupKey] || groupKey}
+                                                </h4>
+                                                <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+                                                    {opts.map((opt) => (
+                                                        <div key={opt.id} className="flex items-center space-x-2">
+                                                            <Checkbox
+                                                                id={`opt-${opt.id}`}
+                                                                checked={form.watch("options")?.includes(opt.id)}
+                                                                onCheckedChange={(checked) => {
+                                                                    const current = form.getValues("options") || [];
+                                                                    if (checked) {
+                                                                        form.setValue("options", [...current, opt.id]);
+                                                                    } else {
+                                                                        form.setValue("options", current.filter((id) => id !== opt.id));
+                                                                    }
+                                                                }}
+                                                            />
+                                                            <Label htmlFor={`opt-${opt.id}`} className="text-sm cursor-pointer font-normal flex justify-between w-full">
+                                                                <span>{opt.name}</span>
+                                                                {opt.extra_price > 0 && (
+                                                                    <span className="text-muted-foreground text-xs ml-1">
+                                                                        +{formatPrice(opt.extra_price)}
+                                                                    </span>
+                                                                )}
+                                                            </Label>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                                <p className="text-xs text-muted-foreground">Centang opsi yang bisa dipilih customer untuk produk ini.</p>
                             </div>
                         )}
 
-                        <div className="flex flex-col gap-2">
-                            <Label htmlFor="file-upload" className="text-xs text-muted-foreground">Upload Gambar Baru</Label>
-                            <Input
-                                id="file-upload"
-                                type="file"
-                                accept="image/*"
-                                onChange={(e) => {
-                                    const file = e.target.files?.[0];
-                                    if (file) {
-                                        setSelectedFile(file);
-                                        setFilePreview(URL.createObjectURL(file));
-                                    }
-                                }}
-                                className="cursor-pointer"
-                            />
+                        <div className="grid gap-2">
+                            <Label>Gambar Produk</Label>
+
+                            {/* Preview Area */}
+                            {(filePreview || form.watch("image")) && (
+                                <div className="relative w-full h-48 bg-muted rounded-md overflow-hidden border">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img
+                                        src={filePreview || form.watch("image") || ""}
+                                        alt="Preview"
+                                        className="w-full h-full object-cover"
+                                    />
+                                </div>
+                            )}
+
+                            <div className="flex flex-col gap-2">
+                                <Label htmlFor="file-upload" className="text-xs text-muted-foreground">Upload Gambar Baru</Label>
+                                <Input
+                                    id="file-upload"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => {
+                                        const file = e.target.files?.[0];
+                                        if (file) {
+                                            setSelectedFile(file);
+                                            setFilePreview(URL.createObjectURL(file));
+                                        }
+                                    }}
+                                    className="cursor-pointer"
+                                />
+                            </div>
+
+                            <div className="space-y-1">
+                                <Label htmlFor="image" className="text-xs text-muted-foreground">Atau masukkan URL Manual</Label>
+                                <Input
+                                    id="image"
+                                    {...form.register("image")}
+                                    placeholder="https://example.com/image.jpg"
+                                />
+                            </div>
                         </div>
 
-                        <div className="space-y-1">
-                            <Label htmlFor="image" className="text-xs text-muted-foreground">Atau masukkan URL Manual</Label>
-                            <Input
-                                id="image"
-                                {...form.register("image")}
-                                placeholder="https://example.com/image.jpg"
+                        <div className="flex items-center space-x-2">
+                            <Checkbox
+                                id="is_available"
+                                checked={form.watch("is_available")}
+                                onCheckedChange={(checked) =>
+                                    form.setValue("is_available", checked as boolean)
+                                }
                             />
+                            <Label htmlFor="is_available">Tersedia untuk dipesan</Label>
                         </div>
-                    </div>
+                    </form>
+                </div>
 
-                    <div className="flex items-center space-x-2">
-                        <Checkbox
-                            id="is_available"
-                            checked={form.watch("is_available")}
-                            onCheckedChange={(checked) =>
-                                form.setValue("is_available", checked as boolean)
-                            }
-                        />
-                        <Label htmlFor="is_available">Tersedia untuk dipesan</Label>
-                    </div>
-
-                    <DialogFooter>
-                        <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => setOpen(false)}
-                            disabled={isSubmitting}
-                        >
-                            Batal
-                        </Button>
-                        <Button type="submit" disabled={isSubmitting}>
-                            {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            Simpan Produk
-                        </Button>
-                    </DialogFooter>
-                </form>
+                <DialogFooter className="p-6 border-t pt-4">
+                    <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setOpen(false)}
+                        disabled={isSubmitting}
+                    >
+                        Batal
+                    </Button>
+                    <Button type="submit" form="product-form" disabled={isSubmitting}>
+                        {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        Simpan Produk
+                    </Button>
+                </DialogFooter>
             </DialogContent>
         </Dialog>
     );
