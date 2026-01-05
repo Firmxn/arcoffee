@@ -1,0 +1,5 @@
+- Gunakan MCP Context7 untuk mencari dokumentasi yang diperlukan.
+- Fokus pada implementasi fitur-fitur yang sudah ada di summary dengan memperhatikan dokumentasi yang tersedia.
+- Pecah fitur menjadi beberapa sub-fitur agar pengembangan lebih mudah.
+- gunakan best practice terhadap struktur direktori agar memudahkan pengembangan dan pemeliharaan kode.
+- berikan komentar-komentar yang jelas dan mudah dipahami pada setiap blok kode yang dibuat.
