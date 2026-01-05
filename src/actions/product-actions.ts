@@ -81,7 +81,8 @@ export async function createProduct(data: ProductFormData) {
         }
 
         revalidatePath("/admin/products");
-        revalidatePath("/menu"); // Update customer menu view
+        revalidatePath("/menu");
+        revalidatePath("/"); // Update featured products on home
         return { success: true };
 
     } catch (error) {
@@ -122,6 +123,7 @@ export async function updateProduct(id: string, data: ProductFormData) {
 
         revalidatePath("/admin/products");
         revalidatePath("/menu");
+        revalidatePath("/");
         return { success: true };
 
     } catch (error) {
@@ -147,6 +149,7 @@ export async function deleteProduct(id: string) {
 
         revalidatePath("/admin/products");
         revalidatePath("/menu");
+        revalidatePath("/");
         return { success: true };
 
     } catch (error) {

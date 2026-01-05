@@ -36,7 +36,7 @@ export default async function AdminProductsPage() {
         description: p.description,
         price: p.price,
         category_id: p.category_id,
-        image: p.image,
+        image: p.image_url,
         is_available: p.is_available,
         slug: p.slug,
         categories: Array.isArray(p.categories) ? p.categories[0] : p.categories, // Handle potential array return if relationship is inferred differently
